@@ -1,7 +1,6 @@
 const WORDS = [
     "Alan",
     "Alberto",
-    "Andrés",
     "Gema",
     "Juan",
     "Sara",
@@ -11,7 +10,7 @@ const WORDS = [
 ];
 
 const loadword = () => {
-    const randomName = Array.from(WORDS[Math.floor(Math.random() * WORDS.length)])
+    const randomName = Array.from(WORDS[Math.floor(Math.random() * WORDS.length)].toLowerCase())
     const promise = new Promise((resolve) => {
         resolve(randomName)
     })
@@ -20,7 +19,6 @@ const loadword = () => {
 
 const play = () => {
     let tamano;
-    let palabraCensurada = "";
     const promise = new Promise((resolve, reject) => {
         loadword()
             .then((randomName) => {
@@ -29,35 +27,21 @@ const play = () => {
                 console.log(randomName)
                 let contador = 1;
                 var frase = "";
-                /*for (let index = 0; index < tamano; index++) {
-                    frase = prompt(`Intruduce la ${contador++}º letra: 
-                    ${palabraCensurada}`)
-                    if (randomName[index] === frase) {
-                        palabraCensurada += `${frase}`
-                    } else {
-                        palabraCensurada += "X"
-                    }
-                    if (frase == null) {
-                        alert("Has cancelado el juego...")
-                        break
-                    }
-                    if (isNaN(frase) === false) {
-                        alert(`Error el valor introducido no es una letra
-                        Debes empezar el juego...`)
-                        break
-                    }
-                    // Prueba:
-                }*/
-                for (let index = 0; index < tamano; index++) {
-                    for (let index = 0; index < tamano; index++) {
-                        if (randomName[index] === frase) {
-                            palabraCensurada += `${frase}`
+                /*for (let i = 0; i < tamano; i++) {
+                    let palabraCensuradaActual;
+                    for (let i = 0; i < tamano; i++) {
+                        if (randomName[0] === frase) {
+                            palabraCensuradaActual += `${frase.toUpperCase()}`
                         } else {
-                            palabraCensurada += "X"
+                            if (randomName[i] === frase) {
+                                palabraCensuradaActual += `${frase}`
+                            } else {
+                                palabraCensuradaActual += "X"
+                            }
                         }
                     }
                     frase = prompt(`Intruduce la ${contador++}º letra: 
-                    ${palabraCensurada}`)
+                    ${palabraCensuradaActual}`)
                     if (frase == null) {
                         alert("Has cancelado el juego...")
                         break
@@ -67,7 +51,21 @@ const play = () => {
                         Debes empezar el juego...`)
                         break
                     }
-                }
+                }*/
+                frase = prompt(`Intruduce la ${contador++}º letra: 
+                    ${palabraCensuradaActual}`)
+                randomName.forEach((currentValue,index) => {
+                    let palabraCensuradaActual;
+                    if (frase == randomName[0]) {
+                        palabraCensuradaActual += `${frase.toUpperCase}`
+                    }else {
+                        if (frase == randomName[i]) {
+                            palabraCensuradaActual += `${frase}`
+                        }else {
+                            palabraCensuradaActual += "X"
+                        }
+                    }
+                });
             })
         return promise
     });
