@@ -19,107 +19,84 @@ if (args.length > 0) {
                         if (err) {
                             console.log(err.message);
                         } else {
-                            /*console.log(`
-                    ┌──────────────────────────────────────────────────────────────┐
-                    │           El valor introducido es un directorio              │
-                    └──────────────────────────────────────────────────────────────┘
-                    ┌──────────────────────────────────────────────────────────────┐
-                    │ ${files.join('          ')}                                  │
-                    │                                                              │
-                    └──────────────────────────────────────────────────────────────┘
-                    `);*/
-
-
-console.log(`\t┌───────────────────────────────────────────────────────────────┐`);
-console.log(`\t│             El valor introducido es un directorio             │`);
-console.log(`\t└───────────────────────────────────────────────────────────────┘`);
-console.log(`\t┌───────────────────────────────────────────────────────────────┐`);
-let horizontal = ""
-for (let i = 0; i < files.length; i++) {
-    let spacesColumn = "" //20
-    let spacesOfFileLength = "" //?
-    for (let i = 0; i < 20; i++) {
-        spacesColumn += " "
-    }
-    if (files[i].length >= 17) {
-        files[i] = files[i].substring(0, 17) + "..."
-    }
-    if (i%3 == 0) {
-        
-        if (files[i].length >= 20) {
-            spacesOfFileLength = spacesColumn
-        }
-        if (i !== 0) {
-            files[i] = `\n\t│ ${files[i]} `
-        }else {
-            files[i] = `│ ${files[i]} `
-        }
-    }
-    if (i%3 == 1 ) {
-        let tamano = i-1
-        // ERROR =====>   Coger length de los archivos de la primera columna para poder restarselos a los 20 espacios
-        for (let i = 0; i < files[tamano].length; i++) {
-            spacesOfFileLength += " "
-        }
-        let finalSpace = spacesColumn - spacesOfFileLength
-        files[i] = `${finalSpace +files[i]} `
-    }
-    if (i%3 == 2) {
-        files[i] = `${files[i]}│`
-    }
-    horizontal = `\t${files.join('')}`
-}
-
-// Position files
-// 0  1  2
-// 3  4  5
-// 6  7  8
-// 9 10 11
-console.log(horizontal);
-console.log(`\t└───────────────────────────────────────────────────────────────┘`);
+                            let linea = ""
+                            for (let i = 0; i < 63; i++) {
+                                linea += "─"
+                            }
+                            console.log(`\t┌${linea}┐`);
+                            console.log(`\t│             El valor introducido es un directorio             │`);
+                            console.log(`\t└${linea}┘`);
+                            console.log(`\t┌${linea}┐`);
+                            let horizontal = ""
+                            for (let i = 0; i < files.length; i++) {
+                                if (files[i] !== files.at(-1) && files[i].length >= 17) {
+                                    files[i] = files[i].substring(0, 17) + "..."
+                                }
+                                if (files.indexOf(files.at(- 1)) % 3 === 0) {
+                                    files[files.indexOf(files.at(-1))] = files[files.indexOf(files.at(-1))].padEnd(62, ' ') + '│'
+                                }
+                                if (files.indexOf(files.at(- 1)) % 3 === 1) {
+                                    files[files.indexOf(files.at(-1))] = files[files.indexOf(files.at(-1))].padEnd(41, ' ') + '│'
+                                }
+                                if (i % 3 === 0) {
+                                    if (i !== 0) {
+                                        files[i] = `\n\t│ ${files[i].padEnd(20, ' ')} `
+                                    } else {
+                                        files[i] = `│ ${files[i].padEnd(20, ' ')} `
+                                    }
+                                }
+                                if (i % 3 === 1) {
+                                    files[i] = `${files[i].padEnd(20, ' ')} `
+                                }
+                                if (i % 3 === 2) {
+                                    files[i] = `${files[i].padEnd(20, ' ')}│`
+                                }
+                                horizontal = `\t${files.join('')}`
+                            }
+                            console.log(horizontal);
+                            console.log(`\t└${linea}┘`);
+                            // Position files
+                            // 0  1  2
+                            // 3  4  5
+                            // 6  7  8
+                            // 9 10 11
                         }
                     });
                 } else {
                     if (err) {
                         console.log(err);
                     } else {
-                        let kb = value.size / 1024
-                        value = kb.toFixed(1)+" KB"
+                        function size() {
+                            let units=["Bytes", "KB", "MB", "GB", "TB"];
+                            let contador = 0;
+                            let kb = 1024;
+                            let div = value.size / 1;
+                                while(div >= kb){
+                                    contador ++;
+                                    div= div/kb;
+                                }
+                                value = div.toFixed(1) + " " + units[contador]
+                                return value
+                            }
                     }
                     fs.access(filepath, fs.constants.R_OK | fs.constants.W_OK, (error) => {
-                        let spaces = " "
-                        let SpacesNameArchivo = ""
-                        let SpacesExtArchivo = ""
-                        let SpacesDirArchivo = ""
-                        let SpacesSizeArchivo = ""
-                        for (let i = 0; i < 26 - path.basename(filepath).length ; i++) {
-                            SpacesNameArchivo += spaces
-                        }
-                        for (let i = 0; i < 26 - path.extname(filepath).length ; i++) {
-                            SpacesExtArchivo += spaces
-                        }
-                        for (let i = 0; i < 26 - path.parse(filepath).dir.length ; i++) {
-                            SpacesDirArchivo += spaces
-                        }
-                        for (let i = 0; i < 26 - value.length ; i++) {
-                            SpacesSizeArchivo += spaces
-                        }
+                        let name = path.dirname(filepath)
                         console.log(`
             ┌────────────────────────────────────────────────────┐
             │           Características del archivo              │
             ├─────────────────────────┬──────────────────────────┤
-            │ Nombre del Archivo      │${path.basename(filepath) + SpacesNameArchivo}│
+            │ Nombre del Archivo      │${path.basename(filepath).padEnd(26, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Extención del Archivo   │${path.extname(filepath) + SpacesExtArchivo}│
+            │ Extención del Archivo   │${path.extname(filepath).padEnd(26, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Directorio del Archivo  │${path.parse(filepath).dir + SpacesDirArchivo}│
+            │ Directorio del Archivo  │${path.basename(name).padEnd(26, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Tamaño del Archivo      │${value+SpacesSizeArchivo}│
+            │ Tamaño del Archivo      │${size().padEnd(26, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
             │ Lectura/Escritura       │${!error ? 'Sí' : 'No'}                        │
             └─────────────────────────┴──────────────────────────┘
                             `);
-                            //26 espacios por container
+
                     })
                 }
             });
