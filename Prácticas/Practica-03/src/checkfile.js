@@ -85,15 +85,15 @@ if (args.length > 0) {
             ┌────────────────────────────────────────────────────┐
             │           Características del archivo              │
             ├─────────────────────────┬──────────────────────────┤
-            │ Nombre del Archivo      │${path.basename(filepath).padEnd(26, ' ')}│
+            │ Nombre del Archivo      │  ${path.basename(filepath).padEnd(24, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Extención del Archivo   │${path.extname(filepath).padEnd(26, ' ')}│
+            │ Extención del Archivo   │  ${path.extname(filepath).padEnd(24, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Directorio del Archivo  │${path.basename(name).padEnd(26, ' ')}│
+            │ Directorio del Archivo  │  ${path.basename(name).padEnd(24, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Tamaño del Archivo      │${size().padEnd(26, ' ')}│
+            │ Tamaño del Archivo      │  ${size().padEnd(24, ' ')}│
             ├─────────────────────────┼──────────────────────────┤
-            │ Lectura/Escritura       │${!error ? 'Sí' : 'No'}                        │
+            │ Lectura/Escritura       │  ${!error ? 'Sí' : 'No'}                      │
             └─────────────────────────┴──────────────────────────┘
                             `);
 
