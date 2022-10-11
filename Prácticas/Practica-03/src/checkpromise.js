@@ -89,7 +89,6 @@ function getFile() {
             if (name.length >= 20) {
                 name = name.substring(0, 20) + "..."
             }
-            console.log(typeof stats.size);
             console.log(`
             ┌────────────────────────────────────────────────────┐
             │           Características del archivo              │
@@ -114,7 +113,11 @@ function getFile() {
 function canAccess() {
     if (args.length > 0) {
         fsPromises.access(filepath, fs.constants.F_OK)
-            .then(fileOrDir())
+            .then(() => {
+                fileOrDir()
+                return
+            }
+            )
             .catch((error) => {
                 if (error.code == "ENOENT") {
                     console.log(`

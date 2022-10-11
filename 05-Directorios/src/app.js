@@ -17,6 +17,13 @@ const path = require('path');
  * stats.isFile : Comprueba si es un file
  * stats.size : variable que indica el tamaño
  * fs.readdir : devuelve los ficheros de un dir
+ * 
+ * fs.mkdir : crear un directorio
+ * fs.mkdirSync : crear un directorio
+ * fs.rename : Renombrear un directorio
+ * fs.renameSync : Renombrar un directorio
+ * fs.rmdir : borrar un directorio
+ * fs.rmdirSync : borrar un directorio
  */
 
 console.clear();
@@ -26,7 +33,7 @@ console.clear();
  */
 //Versión callback
 
-//Si no retorna un errorel file existe y se tiene acceso
+//Si no retorna un error el file existe y se tiene acceso
 //   fs.constants.F_OK : Read/Write/Execute permission (default)
 //   fs.constants.R_OK : Has read permission
 //   fs.constants.W_OK : Has write permission
@@ -79,13 +86,83 @@ try {
 }
 
 /**
+ * CREAR UN DIRECTORIO
+ */
+
+fs.access('./dir_callback', fs.constants.F_OK, (err) => {
+    //No existe
+    if (err) {
+        // fs.mkdir('./dir_callback', {reursive: true} , (err) => {})
+        fs.mkdir('./dir_callback', (err) => {
+            if (err) {
+                console.log(err.message);
+            }else {
+                console.log("fs.mkdir Carpeta creada correctamente");
+            }
+        })
+    }else {
+        console.log("fs.mkdir Carpeta dir_callback ya existente");
+    }
+})
+
+// Version con promesas
+fsPromises
+    .mkdir('./dir_promesas')
+    .then( () => {
+        console.log("fsPromisise.mkdir Carpeta dir_promesas creada correctamente");
+    })
+    .catch( (e) => {
+        if (e.code === "EEXIST") {
+            console.log("fsPromisise.mkdir Carpeta dir_promesas ya existe");
+            return;
+        }
+        throw e
+    });
+
+/**
+ * RENOMBRAR UN DIRECTORIO
+ */
+
+//Version callbacks
+
+fs.rename('./dir_callback', './dir_callback_new', (err) => {
+    //No existe
+    if (err) {
+        if (err.code === "ENOENT") {
+            console.log("dir_callback no existe");
+            return;
+        }
+        console.log('fs.rename :', err);
+        throw err
+    }else {
+        console.log('fs.rename Renombrado dir_callback_new correctamente');
+    }
+})
+
+//Version promesas
+fsPromises
+    .rename('./dir_promesas', './dir_promesas_new')
+    .then( () => {
+        console.log("fsPromisise renombrada a ./dir_promesas_new");
+    })
+    .catch( (e) => {
+        if (e.code === "EEXIST") {
+            console.log("fsPromisise.rename dir_promesas No existe");
+            return;
+        }
+        console.log('fsPromises.rename', e);
+        throw e;
+    });
+
+
+/**
  * COMPROBAR SI ES DIRECTORIO O FICHERO
  */
 
 fs.stat( path.join(__dirname, 'app.js'), (err, stats) => {
     console.log(
         'stat callback:',
-        stats.isDirectory() ? 'Es un directorio' : 'No es un directorio'
+        stats.isDirectory() ? 'Es un directorio' : err
     );
     console.log('stat callback', stats);
 });

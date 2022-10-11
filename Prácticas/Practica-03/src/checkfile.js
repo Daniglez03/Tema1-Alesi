@@ -7,7 +7,7 @@ let asteriscos = ""
 for (let i = 0; i < 40; i++) {
     asteriscos += "*"
 }
-if (args.length >= 0) {
+if (args.length === 1) {
     fs.access(args[0], fs.constants.F_OK, (error) => {
         if (error) {
             console.log(`
@@ -57,6 +57,7 @@ if (args.length >= 0) {
                                         files[i] = `\n\t│ ${files[i].padEnd(20, ' ')} `
                                     } else {
                                         files[i] = `│ ${files[i].padEnd(20, ' ')} `
+                                        
                                     }
                                 }
                                 if (i % 3 === 1) {
