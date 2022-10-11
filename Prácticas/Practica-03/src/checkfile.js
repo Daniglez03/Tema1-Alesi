@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-
 const args = process.argv.slice(2);
 const filepath = args[0]
+
 let asteriscos = ""
 for (let i = 0; i < 40; i++) {
     asteriscos += "*"
